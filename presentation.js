@@ -1,24 +1,30 @@
-var service = require('./service.js');
-var readline = require('readline');
+const service = require('./service.js');
+const readline = require('readline');
 exports.start = start;
 
 // point d'entrée
 function start() {
-
     // Appel du scanner
-    var rl = readline.createInterface({
+    let rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
 
     console.log('Merci de vous identifier :');
+
+
+  /*
     rl.question('Nom d\'utilisateur : \n', function (utilisateur) {
+
         rl.question('Mot de passe : \n', function (motDePasse) {
             service.login(utilisateur, motDePasse, function () {
                 afficherMenu(rl);
             })
         })
     });
+*/
+
+
 }
 
 function afficherMenu(rl) {
@@ -42,11 +48,7 @@ function afficherMenu(rl) {
             console.log('Au revoir');
             rl.close();
         }
-
-
     });
-
-
 }
 
 

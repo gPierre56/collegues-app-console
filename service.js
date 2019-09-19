@@ -1,10 +1,10 @@
-var request = require('request').defaults({jar: true});
+const request = require('request').defaults({jar: true});
 exports.login = login;
 exports.recherche = recupererMatricule;
 exports.recuperer = recupererInfos;
 
 
-
+/*
 function login(login, motDePasse, callbackFn) {
 
     request('https://guillaume-top-collegues.herokuapp.com/auth', {
@@ -25,10 +25,29 @@ function login(login, motDePasse, callbackFn) {
             }
         }
     );
+}
+*/
 
+function login(username, password) {
+
+    return new Promise(function (resolve, reject) {
+        request('https://guillaume-top-collegues.herokuapp.com/auth', {
+            method: 'POST',
+            json: true,
+            body: {
+                nomUtilisateur: username,
+                motDePasse: password
+            }
+    }, function resp(err, res, body) {
+            if (res.statusCode === 200) {
+            resolve(body);
+            } else {
+                reject(err);
+            }
+        })
+        })
 
 }
-
 function recupererMatricule(nom, callbackFn, errorFn) {
     console.log('Nom récupéré :' + nom);
     request('https://guillaume-top-collegues.herokuapp.com/collegue?nomCollegue=' + nom, {
@@ -55,7 +74,7 @@ function recupererInfos(body, callbackFn2) {
     console.log('Matricule inséré dans la requête :' + body);
 
 
-        var nbMats = body.length;
+        let nbMats = body.length;
 
         retour = [];
         body.forEach(function(matricule){
