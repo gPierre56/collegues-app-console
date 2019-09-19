@@ -1,6 +1,9 @@
-const service = require('./service.js');
+const Service = require('./service.js');
 const readline = require('readline');
 exports.start = start;
+
+const service = new Service();
+
 
 // point d'entrée
 function start() {
@@ -11,20 +14,17 @@ function start() {
     });
 
     console.log('Merci de vous identifier :');
+    console.log('Identifiant : jojo, Mot de passe : 1234');
 
-
-  /*
-    rl.question('Nom d\'utilisateur : \n', function (utilisateur) {
-
-        rl.question('Mot de passe : \n', function (motDePasse) {
-            service.login(utilisateur, motDePasse, function () {
+    rl.question('Nom d\'utilisateur :', function (utilisateur) {
+        rl.question('Mot de passe :', function (motDePasse) {
+            service.login(utilisateur, motDePasse).then(function () {
                 afficherMenu(rl);
-            })
+            }, function (err) {
+                console.log(err);
+            });
         })
-    });
-*/
-
-
+    })
 }
 
 function afficherMenu(rl) {
@@ -34,22 +34,34 @@ function afficherMenu(rl) {
 
 
     rl.question('Choisissez une action : \n', function (saisie) {
-        if (saisie == 1) {
-            rl.question('Nom de la personne à rechercher :', function (nomCollegue) {
-                console.log('>> Recherche en cours du nom ' + nomCollegue);
-                service.recherche(nomCollegue, function(callbackFn) {
-                    service.recuperer(callbackFn, function (resultat) {
-                        console.log(resultat);
-                    });
-                } )
+            if (saisie == 1) {
+                rl.question('Nom de la personne à rechercher :', function (nom) {
+                    service.recupererMatricule(nom).then(function (matricule) {
+                        service.recupererInfos(matricule).then(function (resultat) {
+                            resultat.forEach(function (element) {
+                                console.log(element);
+                            })
+                        })
+                    }, function (err) {
+                        console.log(err);
+                    })
 
-            })
-        } else if (saisie == 99) {
-            console.log('Au revoir');
-            rl.close();
+
+                })
+
+
+            } else if (saisie == 99) {
+                console.log('Au revoir');
+                rl.close();
+            }
+
+
         }
-    });
+    )
+
+
 }
+
 
 
 
