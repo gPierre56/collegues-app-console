@@ -75,9 +75,8 @@ class Service {
         )
     }
 
-    afficherMenu(rl) {
 
-    }
+
 
 
 }
