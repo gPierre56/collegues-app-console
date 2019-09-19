@@ -39,10 +39,14 @@ const afficherMenu = (rl) =>  {
         if (saisie === '1') {
             rl.question('Nom de la personne à rechercher :', (nom) => {
                 service.recupererMatricule(nom).then((collegues) => {
+                    if (collegues.length === 0) {
+                        console.log('Aucun collègue avec ce nom trouvé.');
+                        afficherMenu(rl);
+                    } else {
                     collegues.forEach((col) => console.log(col.toString()));
-                    afficherMenu(rl);
-                }).catch(() => {
-                    console.log('Aucun collègue n\'a été trouvé pour ce nom.');
+                    afficherMenu(rl); }
+                }).catch((err) => {
+                    console.log(err);
                     afficherMenu(rl);
                 })
 
