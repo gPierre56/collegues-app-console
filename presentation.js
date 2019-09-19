@@ -31,56 +31,79 @@ function start() {
 function afficherMenu(rl) {
 
 
+    console.log('1. Rechercher un collègue par nom');
+    console.log('2. Ajouter un collègue');
+    console.log('3. Modifier l\'email');
+    console.log('4. Modifier la photo');
+    console.log('99. Sortir');
 
 
-        console.log('1. Rechercher un collègue par nom');
-        console.log('2. Ajouter un collègue');
-        console.log('99. Sortir');
+    rl.question('Choisissez une action : \n', (saisie) => {
 
-
-        rl.question('Choisissez une action : \n', (saisie) => {
-
-                if (saisie === '1') {
-                    rl.question('Nom de la personne à rechercher :', (nom) => {
-                        service.recupererMatricule(nom).then((collegues) => {
-                            collegues.forEach((col) => console.log(col.toString()))
-                        }).catch((err) => {
-                            console.log('Aucun collègue n\'a été trouvé pour ce nom.');
-                        })
-
-
+            if (saisie === '1') {
+                rl.question('Nom de la personne à rechercher :', (nom) => {
+                    service.recupererMatricule(nom).then((collegues) => {
+                        collegues.forEach((col) => console.log(col.toString()))
+                    }).catch((err) => {
+                        console.log('Aucun collègue n\'a été trouvé pour ce nom.');
                     })
 
 
-                } else if (saisie === '2') {
-                    rl.question('Nom de la personne à ajouter : ', (nom) => {
-                        rl.question('Prénom de la personne :', (prenom) => {
-                            rl.question('Email de la personne', (email) => {
-                                rl.question('Date de naissance :', (dateDeNaissance) => {
-                                    rl.question('Url de la photo :', (photoUrl) => {
-                                        let collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
-                                        service.ajouterCollegue(collegue).then((collegue) => {
-                                                console.log(`Collègue ajouté : ${collegue.toString()}`);
-                                            }
-                                        ).catch(() => {
-                                            console.log('Erreur lors de l\'ajout.');
-                                        })
+                })
+
+
+            } else if (saisie === '2') {
+                rl.question('Nom de la personne à ajouter : ', (nom) => {
+                    rl.question('Prénom de la personne :', (prenom) => {
+                        rl.question('Email de la personne', (email) => {
+                            rl.question('Date de naissance :', (dateDeNaissance) => {
+                                rl.question('Url de la photo :', (photoUrl) => {
+                                    let collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
+                                    service.ajouterCollegue(collegue).then((collegue) => {
+                                            console.log(`Collègue ajouté : ${collegue.toString()}`);
+                                        }
+                                    ).catch(() => {
+                                        console.log('Erreur lors de l\'ajout.');
                                     })
                                 })
                             })
                         })
                     })
-                } else if (saisie === '99') {
-                    console.log('Au revoir');
-                    rl.close();
-                }
-
-            choix = saisie;
+                })
+            }
+            else if (saisie === '3') {
+                rl.question('Matricule du collègue à modifier :', (matricule) => {
+                    rl.question('Nouvel email : ', (email) => {
+                        service.modifierEmailCollegue(matricule, email).then((body) => {
+                            console.log('modification effectuée :' + body.toString())
+                        }).catch(() => {
+                            console.log('Erreur lors de la modification de l\'email');
+                        })
+                    })
+                })
             }
 
+            else if (saisie === '4') {
+                rl.question('Matricule du collègue à modifier :', (matricule) => {
+                    rl.question('Nouvelle url : ', (url) => {
+                        service.modifierPhotoCollegue(matricule, url).then((body) => {
+                            console.log('modification effectuée.')
+                        }).catch((err) => {
+                            console.log(err);
+                            console.log('Erreur lors de la modification de l\'url de la photo');
+                        })
+                    })
+                })
+            }
 
-        )
+            else if (saisie === '99') {
+                console.log('Au revoir');
+                rl.close();
+            }
 
+            choix = saisie;
+        }
+    )
 
 
 }

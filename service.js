@@ -16,6 +16,7 @@ class Service {
 
 
     }
+
     // Promise<Promise[]>
 // Promise<Promise<[]>>
     recupererMatricule(nom) {
@@ -45,8 +46,39 @@ class Service {
                 },
                 json: true
             },
-            )
+        )
     }
+
+    modifierEmailCollegue(matricule, email) {
+        return request('https://guillaume-top-collegues.herokuapp.com/collegue/' + matricule, {
+
+
+                method: 'PATCH',
+                body: {
+                    "email": email
+                },
+                json: true
+            },
+        )
+    }
+
+    modifierPhotoCollegue(matricule, url) {
+        return request('https://guillaume-top-collegues.herokuapp.com/collegue/' + matricule, {
+
+
+                method: 'PATCH',
+                body: {
+                    "photoUrl": url
+                },
+                json: true
+            },
+        )
+    }
+
+    afficherMenu(rl) {
+
+    }
+
 
 }
 
