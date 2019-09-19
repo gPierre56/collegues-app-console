@@ -17,11 +17,11 @@ function start() {
     console.log('Merci de vous identifier :');
     console.log('Identifiant : john, Mot de passe : 1234');
 
-    rl.question('Nom d\'utilisateur :', function (utilisateur) {
-        rl.question('Mot de passe :', function (motDePasse) {
-            service.login(utilisateur, motDePasse).then(function () {
+    rl.question('Nom d\'utilisateur :', (utilisateur) => {
+        rl.question('Mot de passe :', (motDePasse) => {
+            service.login(utilisateur, motDePasse).then(() => {
                 afficherMenu(rl);
-            }, function () {
+            }, () => {
                 console.log('Identifiants incorrects');
             });
         })
@@ -30,54 +30,57 @@ function start() {
 
 function afficherMenu(rl) {
 
-    console.log('1. Rechercher un collègue par nom');
-    console.log('2. Ajouter un collègue');
-    console.log('99. Sortir');
 
 
-    rl.question('Choisissez une action : \n', function (saisie) {
-            if (saisie === '1') {
-                rl.question('Nom de la personne à rechercher :', function (nom) {
-                    service.recupererMatricule(nom).then(function (matricule) {
-                        service.recupererInfos(matricule).then(function (resultat) {
-                            resultat.forEach(function (element) {
-                                console.log(element);
-                            })
+
+        console.log('1. Rechercher un collègue par nom');
+        console.log('2. Ajouter un collègue');
+        console.log('99. Sortir');
+
+
+        rl.question('Choisissez une action : \n', (saisie) => {
+
+                if (saisie === '1') {
+                    rl.question('Nom de la personne à rechercher :', (nom) => {
+                        service.recupererMatricule(nom).then((collegues) => {
+                            collegues.forEach((col) => console.log(col.toString()))
+                        }).catch((err) => {
+                            console.log('Aucun collègue n\'a été trouvé pour ce nom.');
                         })
-                    }, function (err) {
-                        console.log(err);
+
+
                     })
 
 
-                })
-
-
-            } else if (saisie === '2') {
-                rl.question('Nom de la personne à ajouter : ', function (nom) {
-                    rl.question('Prénom de la personne :', function (prenom) {
-                        rl.question('Email de la personne', function (email) {
-                            rl.question('Date de naissance :', function (dateDeNaissance) {
-                                rl.question('Url de la photo :', function (photoUrl) {
-                                    let collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
-                                    service.ajouterCollegue(collegue).then(function (collegue) {
-                                        console.log(`Collègue ajouté : ${collegue.toString()}`);
-                                    }, function (err) {
-                                        console.log(err);
+                } else if (saisie === '2') {
+                    rl.question('Nom de la personne à ajouter : ', (nom) => {
+                        rl.question('Prénom de la personne :', (prenom) => {
+                            rl.question('Email de la personne', (email) => {
+                                rl.question('Date de naissance :', (dateDeNaissance) => {
+                                    rl.question('Url de la photo :', (photoUrl) => {
+                                        let collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
+                                        service.ajouterCollegue(collegue).then((collegue) => {
+                                                console.log(`Collègue ajouté : ${collegue.toString()}`);
+                                            }
+                                        ).catch(() => {
+                                            console.log('Erreur lors de l\'ajout.');
+                                        })
                                     })
                                 })
                             })
                         })
                     })
-                })
-            }
-            else if (saisie === '99') {
-                console.log('Au revoir');
-                rl.close();
+                } else if (saisie === '99') {
+                    console.log('Au revoir');
+                    rl.close();
+                }
+
+            choix = saisie;
             }
 
 
-        }
-    )
+        )
+
 
 
 }
