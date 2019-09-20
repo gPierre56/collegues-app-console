@@ -1,6 +1,12 @@
-class Collegue {
+export class Collegue {
 
-    constructor(nom, prenom, email, dateDeNaissance, photoUrl) {
+    public nom:string;
+    public prenom:string;
+    public email:string;
+    public dateDeNaissance:string;
+    public photoUrl:string;
+
+    constructor(nom:string, prenom:string, email:string, dateDeNaissance:string, photoUrl:string) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -13,5 +19,3 @@ class Collegue {
     }
 
 }
-
-module.exports = Collegue;

@@ -1,9 +1,15 @@
-const request = require('request-promise-native').defaults({jar: true});
-const Collegue = require('./Collegue');
+import r from 'request-promise-native';
+import {Collegue} from './Collegue';
+const request = r.defaults({jar: true});
 
-class Service {
 
-    login(username, password) {
+export class Service {
+
+    constructor() {
+
+    }
+
+    login(username:string, password:string):Promise<void> {
 
         return request('https://guillaume-top-collegues.herokuapp.com/auth', {
             method: 'POST',
@@ -12,29 +18,29 @@ class Service {
                 nomUtilisateur: username,
                 motDePasse: password
             }
-        });
+        }).promise();
 
 
     }
 
     // Promise<Promise[]>
 // Promise<Promise<[]>>
-    recupererMatricule(nom) {
+    recupererMatricule(nom:string): Promise<Collegue[]> {
         return request(`https://guillaume-top-collegues.herokuapp.com/collegue?nomCollegue=${nom}`, {
                 method: 'GET',
                 json: true
             },
         ).then(tabMatricules => tabMatricules
-            .map(mat => 'https://guillaume-top-collegues.herokuapp.com/collegue/' + mat)
-            .map(url => request(url, {json: true})))
-            .then(tabPromises => Promise.all(tabPromises))
+            .map((mat:string) => 'https://guillaume-top-collegues.herokuapp.com/collegue/' + mat)
+            .map((url:string) => request(url, {json: true})))
+            .then((tabPromises:Array<Promise<Collegue>>) => Promise.all(tabPromises))
             .then(tabCols => tabCols.map(col => new Collegue(col.nom, col.prenom, col.email, col.dateDeNaissance, col.photoUrl)))
 
 
     };
 
 
-    ajouterCollegue(collegue) {
+    ajouterCollegue(collegue:Collegue):Promise<Collegue> {
         return request('https://guillaume-top-collegues.herokuapp.com/collegue', {
                 method: 'POST',
                 body: {
@@ -46,10 +52,10 @@ class Service {
                 },
                 json: true
             },
-        )
+        ).promise()
     }
 
-    modifierEmailCollegue(matricule, email) {
+    modifierEmailCollegue(matricule:string, email:string):Promise<any> {
         return request('https://guillaume-top-collegues.herokuapp.com/collegue/' + matricule, {
 
 
@@ -59,10 +65,10 @@ class Service {
                 },
                 json: true
             },
-        )
+        ).promise()
     }
 
-    modifierPhotoCollegue(matricule, url) {
+    modifierPhotoCollegue(matricule:string, url:string):Promise<any> {
         return request('https://guillaume-top-collegues.herokuapp.com/collegue/' + matricule, {
 
 
@@ -72,13 +78,13 @@ class Service {
                 },
                 json: true
             },
-        )
+        ).promise()
     }
 
 
 }
 
-module.exports = Service;
+
 
 
 
