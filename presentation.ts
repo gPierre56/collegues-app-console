@@ -1,5 +1,5 @@
 import {Service} from './service'
-import readline from 'readline';
+import readline, {Interface} from 'readline';
 import {Collegue} from './Collegue';
 
 
@@ -30,7 +30,7 @@ export class Presentation {
     }
 
 
-    afficherMenu(rl:any)  {
+    afficherMenu(rl:Interface)  {
         const menu:string = '1. Rechercher un collègue par nom\n'
             + '2. Ajouter un collègue\n'
             + '3. Modifier l\'email\n'
