@@ -1,4 +1,5 @@
 import moment from "moment";
+import {log} from "util";
 moment.locale('fr');
 export class Utils {
 
@@ -12,7 +13,8 @@ export class Utils {
 
 
     dateToLocalDate(dateAConvertir:Date):string {
-       return `${dateAConvertir.getFullYear()}-${dateAConvertir.getMonth()}-${dateAConvertir.getDay()}`;
+
+       return dateAConvertir.toISOString().substr(0,10);
     }
 
     dateToFrenchDate(dateAConvertir:Date):string {

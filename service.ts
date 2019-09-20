@@ -42,13 +42,14 @@ export class Service {
 
 
     ajouterCollegue(collegue:Collegue):Promise<Collegue> {
+        let dateTransformee = this.utils.dateToLocalDate(collegue.dateDeNaissance);
         return request(`${_urlTemplate}/collegue`, {
                 method: 'POST',
                 body: {
                     "nom": collegue.nom,
                     "prenom": collegue.prenom,
                     "email": collegue.email,
-                    "dateDeNaissance": collegue.dateDeNaissance,
+                    "dateDeNaissance": dateTransformee,
                     "photoUrl": collegue.photoUrl
                 },
                 json: true
