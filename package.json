@@ -20,5 +20,9 @@
   "dependencies": {
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/angular": "^1.6.56",
+    "typescript": "^3.6.3"
   }
 }

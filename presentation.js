@@ -28,7 +28,7 @@ function start() {
     })
 }
 
-const afficherMenu = (rl) =>  {
+const afficherMenu = (rl) => {
     const menu = '1. Rechercher un collègue par nom\n'
         + '2. Ajouter un collègue\n'
         + '3. Modifier l\'email\n'
@@ -43,8 +43,9 @@ const afficherMenu = (rl) =>  {
                         console.log('Aucun collègue avec ce nom trouvé.');
                         afficherMenu(rl);
                     } else {
-                    collegues.forEach((col) => console.log(col.toString()));
-                    afficherMenu(rl); }
+                        collegues.forEach((col) => console.log(col.toString()));
+                        afficherMenu(rl);
+                    }
                 }).catch((err) => {
                     console.log(err);
                     afficherMenu(rl);
@@ -63,7 +64,7 @@ const afficherMenu = (rl) =>  {
                                 let collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
                                 service.ajouterCollegue(collegue).then((collegue) => {
                                         console.log(`Collègue ajouté : ${collegue.toString()}`);
-                                    afficherMenu(rl);
+                                        afficherMenu(rl);
                                     }
                                 ).catch(() => {
                                     console.log('Erreur lors de l\'ajout.');
@@ -104,9 +105,6 @@ const afficherMenu = (rl) =>  {
             rl.close();
         }
     })
-
-
-
 
 
 }
