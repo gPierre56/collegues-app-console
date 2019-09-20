@@ -1,15 +1,16 @@
 import r from 'request-promise-native';
 import {Collegue} from './Collegue';
 const request = r.defaults({jar: true});
+const _urlTemplate = 'https://guillaume-top-collegues.herokuapp.com';
 
-
+// Classe gérant les échanges avec l'API back
 export class Service {
 
 
-
+    // Identifie l'utilisateur auprès de l'application collègues-api
     login(username:string, password:string):Promise<void> {
 
-        return request('https://guillaume-top-collegues.herokuapp.com/auth', {
+        return request(`${_urlTemplate}/auth`, {
             method: 'POST',
             json: true,
             body: {
@@ -20,16 +21,14 @@ export class Service {
 
 
     }
-
-    // Promise<Promise[]>
-// Promise<Promise<[]>>
+    // Récupère les infos sur un ou plusieurs collègues selon un nom de famille donné
     recupererMatricule(nom:string): Promise<Collegue[]> {
-        return request(`https://guillaume-top-collegues.herokuapp.com/collegue?nomCollegue=${nom}`, {
+        return request(`${_urlTemplate}/collegue?nomCollegue=${nom}`, {
                 method: 'GET',
                 json: true
             },
         ).then(tabMatricules => tabMatricules
-            .map((mat:string) => 'https://guillaume-top-collegues.herokuapp.com/collegue/' + mat)
+            .map((mat:string) => `${_urlTemplate}/collegue/${mat}`)
             .map((url:string) => request(url, {json: true})))
             .then((tabPromises:Array<Promise<Collegue>>) => Promise.all(tabPromises))
             .then(tabCols => tabCols.map(col => new Collegue(col.nom, col.prenom, col.email, col.dateDeNaissance, col.photoUrl)))
@@ -39,7 +38,7 @@ export class Service {
 
 
     ajouterCollegue(collegue:Collegue):Promise<Collegue> {
-        return request('https://guillaume-top-collegues.herokuapp.com/collegue', {
+        return request(`${_urlTemplate}/collegue`, {
                 method: 'POST',
                 body: {
                     "nom": collegue.nom,
