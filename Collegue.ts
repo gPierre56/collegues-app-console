@@ -2,7 +2,7 @@ export class Collegue {
 
 
 
-    constructor(public nom:string, public prenom:string, public email:string, public dateDeNaissance:string, public photoUrl:string) {
+    constructor(public nom:string, public prenom:string, public email:string, public dateDeNaissance:Date, public photoUrl:string) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;

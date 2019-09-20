@@ -1,10 +1,14 @@
 import r from 'request-promise-native';
 import {Collegue} from './Collegue';
+import {Utils} from "./utils";
+
 const request = r.defaults({jar: true});
 const _urlTemplate = 'https://guillaume-top-collegues.herokuapp.com';
 
 // Classe gérant les échanges avec l'API back
 export class Service {
+
+    utils:Utils = new Utils();
 
 
     // Identifie l'utilisateur auprès de l'application collègues-api

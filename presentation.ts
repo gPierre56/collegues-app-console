@@ -1,12 +1,14 @@
 import {Service} from './service'
 import readline, {Interface} from 'readline';
 import {Collegue} from './Collegue';
+import {Utils} from "./utils";
 
 
 export class Presentation {
 
-    constructor(public service: Service) {
+    constructor(public service: Service, public utils: Utils) {
         this.service = service;
+        this.utils = utils;
     }
 
 // point d'entrée
@@ -56,7 +58,7 @@ export class Presentation {
             } else if (saisie === '4') {
                 rl.question('Matricule du collègue à modifier : ', (matricule: string) =>
                     rl.question('Nouvelle url : ', (url: string) =>
-                        this.service.modifierPhotoCollegue(matricule, url).then((body) => {
+                        this.service.modifierPhotoCollegue(matricule, url).then(() => {
                             console.log('modification effectuée.');
                             this.afficherMenu(rl);
                         }).catch((err) => {
@@ -99,11 +101,11 @@ export class Presentation {
         rl.question('Nom de la personne à ajouter : ', (nom: string) =>
             rl.question('Prénom de la personne : ', (prenom: string) =>
                 rl.question('Email de la personne : ', (email: string) =>
-                    rl.question('Date de naissance : ', (dateDeNaissance: string) =>
+                    rl.question('Date de naissance au format jour/mois/année : ', (dateDeNaissance: string) =>
                         rl.question('Url de la photo :', (photoUrl: string) => {
-                            let collegue: Collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
+                            let collegue: Collegue = new Collegue(nom, prenom, email, this.utils.convertirDate(dateDeNaissance), photoUrl);
                             this.service.ajouterCollegue(collegue).then((collegue) => {
-                                    console.log(`Collègue ajouté : ${collegue.toString()}`);
+                                    console.log(`Collègue ajouté : ${collegue.prenom} ${collegue.nom}, né le ${this.utils.dateToFrenchDate(collegue.dateDeNaissance)}, ${collegue.email}, ${collegue.photoUrl}`);
                                     this.afficherMenu(rl);
                                 }
                             ).catch(() => {
