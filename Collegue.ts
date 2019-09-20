@@ -1,12 +1,8 @@
 export class Collegue {
 
-    public nom:string;
-    public prenom:string;
-    public email:string;
-    public dateDeNaissance:string;
-    public photoUrl:string;
 
-    constructor(nom:string, prenom:string, email:string, dateDeNaissance:string, photoUrl:string) {
+
+    constructor(public nom:string, public prenom:string, public email:string, public dateDeNaissance:string, public photoUrl:string) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;

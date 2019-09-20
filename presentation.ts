@@ -3,10 +3,12 @@ import readline, {Interface} from 'readline';
 import {Collegue} from './Collegue';
 
 
-const service:Service = new Service();
+
 export class Presentation {
 
-
+constructor(public service:Service) {
+    this.service = service;
+}
 // point d'entrée
     start():void {
         // Appel du scanner
@@ -20,7 +22,7 @@ export class Presentation {
 
         rl.question('Nom d\'utilisateur :', (utilisateur:string) => {
             rl.question('Mot de passe :', (motDePasse:string) => {
-                service.login(utilisateur, motDePasse).then(() => {
+                this.service.login(utilisateur, motDePasse).then(() => {
                     this.afficherMenu(rl);
                 }, () => {
                     console.log('Identifiants incorrects');
@@ -40,7 +42,7 @@ export class Presentation {
         rl.question(menu, (saisie:string) => {
             if (saisie === '1') {
                 rl.question('Nom de la personne à rechercher :', (nom:string) => {
-                    service.recupererMatricule(nom).then((collegues) => {
+                    this.service.recupererMatricule(nom).then((collegues) => {
                         if (collegues.length === 0) {
                             console.log('Aucun collègue avec ce nom trouvé.');
                             this.afficherMenu(rl);
@@ -64,7 +66,7 @@ export class Presentation {
                             rl.question('Date de naissance :', (dateDeNaissance:string) => {
                                 rl.question('Url de la photo :', (photoUrl:string) => {
                                     let collegue:Collegue = new Collegue(nom, prenom, email, dateDeNaissance, photoUrl);
-                                    service.ajouterCollegue(collegue).then((collegue) => {
+                                    this.service.ajouterCollegue(collegue).then((collegue) => {
                                             console.log(`Collègue ajouté : ${collegue.toString()}`);
                                             this.afficherMenu(rl);
                                         }
@@ -80,7 +82,7 @@ export class Presentation {
             } else if (saisie === '3') {
                 rl.question('Matricule du collègue à modifier :', (matricule:string) => {
                     rl.question('Nouvel email : ', (email:string) => {
-                        service.modifierEmailCollegue(matricule, email).then((body) => {
+                        this.service.modifierEmailCollegue(matricule, email).then((body) => {
                             console.log('modification effectuée :' + body.toString());
                             this.afficherMenu(rl);
                         }).catch(() => {
@@ -92,7 +94,7 @@ export class Presentation {
             } else if (saisie === '4') {
                 rl.question('Matricule du collègue à modifier :', (matricule:string) => {
                     rl.question('Nouvelle url : ', (url:string) => {
-                        service.modifierPhotoCollegue(matricule, url).then((body) => {
+                        this.service.modifierPhotoCollegue(matricule, url).then((body) => {
                             console.log('modification effectuée.');
                             this.afficherMenu(rl);
                         }).catch((err) => {

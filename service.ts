@@ -5,9 +5,7 @@ const request = r.defaults({jar: true});
 
 export class Service {
 
-    constructor() {
 
-    }
 
     login(username:string, password:string):Promise<void> {
 
